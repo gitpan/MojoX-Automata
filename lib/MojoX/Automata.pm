@@ -5,7 +5,7 @@ use warnings;
 
 use base 'Mojo::Base';
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 use constant DEBUG => $ENV{MOJOX_AUTOMATA_DEBUG} || 0;
 
@@ -112,7 +112,8 @@ MojoX::Automata - Call Mojo dispatchers in a finite automata manner
         end           +---------------<---------------<------------+
 
 
-    package MyApp;
+    package
+    MyApp;
 
     use strict;
     use warnings;
@@ -124,17 +125,7 @@ MojoX::Automata - Call Mojo dispatchers in a finite automata manner
     __PACKAGE__->attr(automata => (default => sub { MojoX::Automata->new }));
 
     __PACKAGE__->attr(
-        config => (
-            default => sub {
-                {   languages      => [qw/ de en /],
-                    language_names => {
-                        de => 'Deutsch',
-                        en => 'English',
-                    },
-                };
-            }
-        )
-    );
+        config => (default => sub { {languages => [qw/ de en /]}; }));
 
     # This method will run for each request
     sub dispatch {
@@ -178,7 +169,7 @@ MojoX::Automata - Call Mojo dispatchers in a finite automata manner
         );
 
         # Mojo Routes (just the part that matches the route without calling
-        # appropriate controller
+        # appropriate controller)
         $automata->register('m' => 'Match', routes => $self->routes);
 
         # Mojo Routes controller call part
@@ -205,6 +196,7 @@ MojoX::Automata - Call Mojo dispatchers in a finite automata manner
         # End state
         $automata->register('E' => 'End');
 
+
         # Setting Start and End states
         $automata->start('S')->end('E');
 
@@ -212,23 +204,23 @@ MojoX::Automata - Call Mojo dispatchers in a finite automata manner
         # Setting transitions between states
 
         # If it was a static file request end the automata, otherwise go to the
-        # state of language detection
+        # state of the language detection
         $automata->add_path('S', 0 => 'l', 1 => 'E');
 
-        # After language detection without any transitions switch to timer
+        # After language detection without any transitions switch to the timer
         $automata->add_path('l' => 't_on');
 
-        # After time got the routes matching state
+        # After the timer go the routes matching state
         $automata->add_path('t_on' => 'm');
 
-        # If route is find get user, otherwise switch to 404 state
+        # If route is found, get user, otherwise switch to 404 state
         $automata->add_path('m', 0 => 'n', 1 => 'u');
 
         # After getting the user check his/her access to specific route (that is why
-        # we didn't call controller just after the match
+        # we didn't call controller just after the match)
         $automata->add_path('u' => 'a');
 
-        # If user has access call dispatcher, otherwise serve 403
+        # If a user has access, call dispatcher, otherwise serve 403
         $automata->add_path('a', 0 => 'f', 1 => 'd');
 
         # Dispatcher (calling controller) can return different answers, go to
