@@ -1,4 +1,5 @@
-package MyApp;
+package
+MyApp;
 
 use strict;
 use warnings;
