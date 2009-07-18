@@ -4,11 +4,9 @@ MyApp;
 use strict;
 use warnings;
 
-use base 'Mojolicious';
+use base 'MojoliciousX::Automata';
 
 use MojoX::Automata;
-
-__PACKAGE__->attr(automata => (default => sub { MojoX::Automata->new }));
 
 __PACKAGE__->attr(
     config => (default => sub { {languages => [qw/ de en /]}; }));
@@ -42,96 +40,45 @@ sub startup {
     # Registering states
 
     # Detect if static file was requested
-    $automata->register('S' => 'Static', static => $self->static);
-
-    # Get page rendering time
-    $automata->register('t_on'  => 'TimerOn');
-    $automata->register('t_off' => 'TimerOff');
+    $automata->state('S')->handler('Static', static => $self->static)
+      ->to(0 => 'l', 1 => 'E');
 
     # Detect language from the url (http://example.com/en/stuff) etc.
-    $automata->register(
-        'l'       => 'DetectLang',
-        languages => $self->config->{languages}
-    );
+    $automata->state('l')
+      ->handler('DetectLang', languages => $self->config->{languages})
+      ->to('t_on');
+
+    # Get page rendering time
+    $automata->state('t_on')->handler('TimerOn')->to('m');
 
     # Mojo Routes (just the part that matches the route without calling
     # appropriate controller)
-    $automata->register('m' => 'Match', routes => $self->routes);
-
-    # Mojo Routes controller call part
-    $automata->register('d' => 'Dispatch', routes => $self->routes);
-
-    # Checking access
-    $automata->register('a' => 'CheckAccess');
-
-    # Rendering view (no need to call $self->render in every controller)
-    $automata->register('v' => 'RenderView');
+    $automata->state('m')->handler('Match', routes => $self->routes)
+      ->to(0 => 'n', 1 => 'u');
 
     # Serving 404 error
-    $automata->register('n' => 'NotFound');
+    $automata->state('n')->handler('NotFound')->to('v');
+
+    # Mojo Routes controller call part
+    $automata->state('d')->handler('Dispatch', routes => $self->routes)
+      ->to(302 => 'E', 500 => 'e', 200 => 't_off', 404 => 'n', 403 => 'f');
+
+    # Checking access
+    $automata->state('a')->handler('CheckAccess')->to(0 => 'f', 1 => 'd');
+
+    # Rendering view (no need to call $self->render in every controller)
+    $automata->state('v')->handler('RenderView')->to(0 => 'e', 1 => 'E');
 
     # Serving 403 error
-    $automata->register('f' => 'Forbidden');
+    $automata->state('f')->handler('Forbidden')->to('v');
 
     # Serving 500 error
-    $automata->register('e' => 'InternalError');
+    $automata->state('e')->handler('InternalError')->to('E');
 
     # Get user from cookie etc
-    $automata->register('u' => 'User');
+    $automata->state('u')->handler('User')->to('a');
 
-    # End state
-    $automata->register('E' => 'End');
-
-
-    # Setting Start and End states
-    $automata->start('S')->end('E');
-
-
-    # Setting transitions between states
-
-    # If it was a static file request end the automata, otherwise go to the
-    # state of the language detection
-    $automata->add_path('S', 0 => 'l', 1 => 'E');
-
-    # After language detection without any transitions switch to the timer
-    $automata->add_path('l' => 't_on');
-
-    # After the timer go the routes matching state
-    $automata->add_path('t_on' => 'm');
-
-    # If route is found, get user, otherwise switch to 404 state
-    $automata->add_path('m', 0 => 'n', 1 => 'u');
-
-    # After getting the user check his/her access to specific route (that is why
-    # we didn't call controller just after the match)
-    $automata->add_path('u' => 'a');
-
-    # If a user has access, call dispatcher, otherwise serve 403
-    $automata->add_path('a', 0 => 'f', 1 => 'd');
-
-    # Dispatcher (calling controller) can return different answers, go to
-    # the right state after that
-    $automata->add_path(
-        'd',
-        302 => 'E',
-        500 => 'e',
-        200 => 't_off',
-        404 => 'n',
-        403 => 'f'
-    );
-
-    # Turn off the timer
-    $automata->add_path('t_off' => 'v');
-
-    # Switch from 404 and 500 to the view
-    $automata->add_path('n' => 'v');
-    $automata->add_path('f' => 'v');
-
-    # Render the view, if there were any rendering errors, switch to 500
-    $automata->add_path('v', 0 => 'e', 1 => 'E');
-
-    # End automata
-    $automata->add_path('e' => 'E');
+    $automata->state('t_off')->handler('TimerOff')->to('v');
 }
 
 1;

@@ -16,12 +16,15 @@ examples/my_app/lib/MyApp/Automata/TimerOn.pm
 examples/my_app/lib/MyApp/Automata/User.pm
 examples/my_app/lib/MyApp/Context.pm
 examples/my_app/lib/MyApp/Root.pm
+examples/my_app/log/development.log
 examples/my_app/public/404.html
 examples/my_app/public/index.html
 examples/my_app/t/basic.t
-examples/my_app/templates/404.phtml
-examples/my_app/templates/root.phtml
+examples/my_app/templates/404.html.epl
+examples/my_app/templates/root/default.html.epl
+lib/MojoliciousX/Automata.pm
 lib/MojoX/Automata.pm
+lib/MojoX/Automata/State.pm
 Makefile.PL
 MANIFEST			This list of files
 MANIFEST.SKIP
@@ -29,4 +32,5 @@ t/00use.t
 t/01pod.t
 t/02pod-coverage.t
 t/automata.t
+t/infinite-loop.t
 META.yml                                 Module meta-data (added by MakeMaker)
