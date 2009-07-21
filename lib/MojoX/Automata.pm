@@ -5,7 +5,7 @@ use warnings;
 
 use base 'Mojo::Base';
 
-our $VERSION = '0.04';
+our $VERSION = '0.500';
 
 use constant DEBUG => $ENV{MOJOX_AUTOMATA_DEBUG} || 0;
 
@@ -235,7 +235,7 @@ L<Mojo::Base> and implements the following the ones.
     $automata->run($c);
 
 =head1 EXAMPLE
-    
+
     You can find example app ready to go in examples/ directory.
 
 =head1 COPYRIGHT & LICENSE

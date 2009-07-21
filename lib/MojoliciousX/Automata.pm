@@ -49,6 +49,12 @@ MojoliciousX::Automata - MojoX::Automata sugar for Mojolicious
     # You get same thing but with default dispatch method and already created
     # attribute 'automata' that is holding MojoX::Automata object
 
+=head1 METHODS
+
+=head2 C<dispatch>
+
+This is an overriden mojolicious dispatch.
+
 =head1 DESCRIPTION
 
 L<MojoliciousX::Automata> is a Mojolicious finite automata dispatching

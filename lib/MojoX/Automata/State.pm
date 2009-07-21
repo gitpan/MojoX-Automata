@@ -75,7 +75,22 @@ MojoX::Automata::State - State class for MojoX::Automata
 
 =head1 DESCRIPTION
 
-    For internal use only
+This is used internally, but a new instance is returned every time a new state
+is created.
+
+=head1 METHODS
+
+=head2 C<handler>
+
+Defines a new handler.
+
+=head2 C<to>
+
+Defines a new transition.
+
+=head2 C<next>
+
+Switches to the next state.
 
 =head1 SEE ALSO
 
