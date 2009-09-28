@@ -5,7 +5,7 @@ use warnings;
 
 use base 'Mojo::Base';
 
-our $VERSION = '0.500';
+our $VERSION = '0.501';
 
 use constant DEBUG => $ENV{MOJOX_AUTOMATA_DEBUG} || 0;
 
@@ -13,10 +13,10 @@ require Carp;
 
 use MojoX::Automata::State;
 
-__PACKAGE__->attr(namespace => (chained => 1));
+__PACKAGE__->attr('namespace');
 __PACKAGE__->attr('_start');
-__PACKAGE__->attr('_states' => (default => sub { {} }));
-__PACKAGE__->attr('limit' => (default => 10000));
+__PACKAGE__->attr('_states' => sub { {} });
+__PACKAGE__->attr('limit' => (10000));
 
 sub state {
     my $self = shift;

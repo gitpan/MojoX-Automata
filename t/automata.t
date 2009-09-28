@@ -25,13 +25,13 @@ use strict;
 use warnings;
 
 use Test::More tests => 5;
-use MojoX::Context;
+use Mojolicious::Controller;
 
 use_ok('MojoX::Automata');
 
-my $c = MojoX::Context->new();
+my $c = Mojolicious::Controller->new;
 
-my $automata = MojoX::Automata->new();
+my $automata = MojoX::Automata->new;
 
 # Preloading class with args
 $automata->state('start')->handler(FilterStart => (key => 'foo'))

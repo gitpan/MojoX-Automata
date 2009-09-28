@@ -8,10 +8,9 @@ use base 'Mojo::Base';
 require Carp;
 use Mojo::Loader;
 
-__PACKAGE__->attr([qw/ name namespace /] => (chained => 1));
+__PACKAGE__->attr([qw/ name namespace /]);
 __PACKAGE__->attr([qw/_handler _to/]);
-__PACKAGE__->attr(
-    loader => (chained => 1, default => sub { Mojo::Loader->new }));
+__PACKAGE__->attr(loader => sub { Mojo::Loader->new });
 
 sub handler {
     my $self = shift;

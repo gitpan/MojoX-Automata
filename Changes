@@ -1,5 +1,8 @@
 Revision history for MojoX-Automata
 
+0.501   2009-09-28 00:00:00
+        - Fixes due to the Mojo update
+
 0.03    2009-03-05 00:00:00
         - pod fixes
 

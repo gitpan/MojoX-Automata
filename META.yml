@@ -1,9 +1,9 @@
 --- #YAML:1.0
 name:               MojoX-Automata
-version:            0.500
+version:            0.501
 abstract:           Call Mojo dispatchers in a finite automata manner
 author:
-    - Viacheslav Tikhanovskii <vti@cpan.org>
+    - Viacheslav Tykhanovskyi <vti@cpan.org>
 license:            perl
 distribution_type:  module
 configure_requires:
@@ -11,7 +11,7 @@ configure_requires:
 build_requires:
     ExtUtils::MakeMaker:  0
 requires:
-    Mojo:        0
+    Mojo:        0.991250
     Test::More:  0
 no_index:
     directory:

@@ -4,7 +4,7 @@ use ExtUtils::MakeMaker;
 
 WriteMakefile(
     NAME          => 'MojoX::Automata',
-    AUTHOR        => 'Viacheslav Tikhanovskii <vti@cpan.org>',
+    AUTHOR        => 'Viacheslav Tykhanovskyi <vti@cpan.org>',
     VERSION_FROM  => 'lib/MojoX/Automata.pm',
     ABSTRACT_FROM => 'lib/MojoX/Automata.pm',
     ($ExtUtils::MakeMaker::VERSION >= 6.3002
@@ -12,8 +12,8 @@ WriteMakefile(
         : ()),
     PL_FILES  => {},
     PREREQ_PM => {
-        'Test::More'       => 0,
-        'Mojo'             => 0
+        'Test::More' => 0,
+        'Mojo'       => '0.991250'
     },
     dist  => {COMPRESS => 'gzip -9f', SUFFIX => 'gz'},
     clean => {FILES    => 'MojoX-Automata-*'}

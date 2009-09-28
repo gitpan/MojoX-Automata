@@ -7,7 +7,7 @@ use base 'Mojolicious';
 
 use MojoX::Automata;
 
-__PACKAGE__->attr(automata => (default => sub { MojoX::Automata->new }));
+__PACKAGE__->attr(automata => sub { MojoX::Automata->new });
 
 sub dispatch {
     my ($self, $c) = @_;
