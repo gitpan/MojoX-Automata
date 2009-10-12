@@ -5,7 +5,7 @@ use warnings;
 
 use base 'Mojo::Base';
 
-our $VERSION = '0.501';
+our $VERSION = '0.502';
 
 use constant DEBUG => $ENV{MOJOX_AUTOMATA_DEBUG} || 0;
 
@@ -174,6 +174,8 @@ MojoX::Automata - Call Mojo dispatchers in a finite automata manner
         $automata->state('u')->handler('User')->to('a');
 
         $automata->state('t_off')->handler('TimerOff')->to('v');
+
+        # No 'E' state specified because is it the end state.
     }
 
     1;
@@ -192,8 +194,8 @@ L<MojoX::Automata> is a Mojo finite automata dispatching mechanizm.
 
 =head2 C<limit>
 
-Holds state change limit number. Dies with an error 'Look like an infinite loop'
-after limit is reached  It is 10000 by default.
+Holds state change limit number. Dies with an error 'Looks like an infinite loop'
+after limit is reached. It is 10000 by default.
 
 =head1 METHODS
 
@@ -205,6 +207,9 @@ L<Mojo::Base> and implements the following the ones.
     Register a new state(s).
 
     $automata->state('routes');
+
+Note that if you don't specify a handler to this state it is going be a dead
+end. This is a way to define 'End' state for example.
 
 =head2 C<handler>
 
@@ -240,7 +245,7 @@ L<Mojo::Base> and implements the following the ones.
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2008 Viacheslav Tikhanovskii, all rights reserved.
+Copyright 2008 Viacheslav Tykhanovskyi, all rights reserved.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

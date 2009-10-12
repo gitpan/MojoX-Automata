@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               MojoX-Automata
-version:            0.501
+version:            0.502
 abstract:           Call Mojo dispatchers in a finite automata manner
 author:
     - Viacheslav Tykhanovskyi <vti@cpan.org>
